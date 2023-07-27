@@ -31,7 +31,8 @@ int close_logfile(void)
 	if (!logfile)
 		return 0;
 	/* No need to call fflush() explicitly, fclose() already does that. */
-	if (fclose(logfile)) {
+	if (fclose(logfile))
+	{
 		/* fclose returned an error. Stop writing to be safe. */
 		logfile = NULL;
 		msg_gerr("Closing the log file returned error %s\n", strerror(errno));
@@ -41,18 +42,21 @@ int close_logfile(void)
 	return 0;
 }
 
-int open_logfile(const char * const filename, bool append)
+int open_logfile(const char *const filename, bool append)
 {
-	char *flags = "w";
-	if(append) {
-		flags = "a";
+	char flags[2] = {'w', 0};
+	if (append)
+	{
+		flags[0] = 'a';
 	}
 
-	if (!filename) {
+	if (!filename)
+	{
 		msg_gerr("No logfile name specified.\n");
 		return 1;
 	}
-	if ((logfile = fopen(filename, flags)) == NULL) {
+	if ((logfile = fopen(filename, flags)) == NULL)
+	{
 		msg_gerr("Error: opening log file \"%s\" failed: %s\n", filename, strerror(errno));
 		return 1;
 	}
@@ -86,9 +90,10 @@ void flashrom_progress_cb(struct flashrom_flashctx *flashctx)
 	unsigned int pc = 0;
 	unsigned int *percentages = progress_state->user_data;
 	if (progress_state->current > 0 && progress_state->total > 0)
-		pc = ((unsigned long long) progress_state->current * 10000llu) /
-		     ((unsigned long long) progress_state->total * 100llu);
-	if (percentages[progress_state->stage] != pc) {
+		pc = ((unsigned long long)progress_state->current * 10000llu) /
+			 ((unsigned long long)progress_state->total * 100llu);
+	if (percentages[progress_state->stage] != pc)
+	{
 		percentages[progress_state->stage] = pc;
 		msg_ginfo("[%s] %u%% complete... ", flashrom_progress_stage_to_string(progress_state->stage), pc);
 	}
@@ -106,7 +111,8 @@ int flashrom_print_cb(enum flashrom_log_level level, const char *fmt, va_list ap
 	if (level < FLASHROM_MSG_INFO)
 		output_type = stderr;
 
-	if (level <= verbose_screen) {
+	if (level <= verbose_screen)
+	{
 		ret = vfprintf(output_type, fmt, ap);
 		/* msg_*spew often happens inside chip accessors in possibly
 		 * time-critical operations. Don't slow them down by flushing. */
@@ -114,7 +120,8 @@ int flashrom_print_cb(enum flashrom_log_level level, const char *fmt, va_list ap
 			fflush(output_type);
 	}
 
-	if ((level <= verbose_logfile) && logfile) {
+	if ((level <= verbose_logfile) && logfile)
+	{
 		ret = vfprintf(logfile, fmt, logfile_args);
 		if (level != FLASHROM_MSG_SPEW)
 			fflush(logfile);
