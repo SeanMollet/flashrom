@@ -871,7 +871,7 @@ int main(int argc, char *argv[])
 	int ret = 0;
 
 	struct cli_options options = { 0 };
-	static const char optstring[] = "r:Rw:v:nNVEfc:l:i:p:Lzho:x";
+	static const char optstring[] = "r:Rw:v:nNVEfc:l:i:p:Lzho:ax";
 	static const struct option long_options[] = {
 		{"read",		1, NULL, 'r'},
 		{"write",		1, NULL, 'w'},
@@ -905,6 +905,7 @@ int main(int argc, char *argv[])
 		{"help",		0, NULL, 'h'},
 		{"version",		0, NULL, 'R'},
 		{"output",		1, NULL, 'o'},
+		{"append",		0, NULL, 'a'},
 		{"progress",		0, NULL, OPTION_PROGRESS},
 		{NULL,			0, NULL, 0},
 	};
