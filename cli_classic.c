@@ -940,7 +940,7 @@ int main(int argc, char *argv[])
 		cli_classic_abort_usage(NULL);
 	if (options.logfile && check_filename(options.logfile, "log"))
 		cli_classic_abort_usage(NULL);
-	if (options.logfile && open_logfile(options.logfile))
+	if (options.logfile && open_logfile(options.logfile,options.append_logfile))
 		cli_classic_abort_usage(NULL);
 
 #if CONFIG_PRINT_WIKI == 1
