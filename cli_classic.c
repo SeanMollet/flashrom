@@ -74,6 +74,7 @@ struct cli_options {
 	bool flash_name, flash_size;
 	bool show_progress;
 	char *logfile;
+	bool append_logfile;
 	char *referencefile;
 	const char *chip_to_probe;
 };
@@ -122,6 +123,7 @@ static void cli_classic_usage(const char *name)
 	       "                                    (optionally with data from <file>)\n"
 	       "      --image <region>[:<file>]     deprecated, please use --include\n"
 	       " -o | --output <logfile>            log output to <logfile>\n"
+		   " -a | --append                      append to logfile instead of overwriting\n"
 	       "      --flash-contents <ref-file>   assume flash contents to be <ref-file>\n"
 	       " -L | --list-supported              print supported devices\n"
 #if CONFIG_PRINT_WIKI == 1
@@ -827,6 +829,9 @@ static void parse_options(int argc, char **argv, const char *optstring,
 			if (options->logfile[0] == '\0') {
 				cli_classic_abort_usage("No log filename specified.\n");
 			}
+			break;
+		case 'a':
+			options->append_logfile = true;
 			break;
 		case OPTION_PROGRESS:
 			options->show_progress = true;

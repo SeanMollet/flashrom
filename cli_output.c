@@ -41,13 +41,18 @@ int close_logfile(void)
 	return 0;
 }
 
-int open_logfile(const char * const filename)
+int open_logfile(const char * const filename, bool append)
 {
+	char *flags = "w";
+	if(append) {
+		flags = "a";
+	}
+
 	if (!filename) {
 		msg_gerr("No logfile name specified.\n");
 		return 1;
 	}
-	if ((logfile = fopen(filename, "w")) == NULL) {
+	if ((logfile = fopen(filename, flags)) == NULL) {
 		msg_gerr("Error: opening log file \"%s\" failed: %s\n", filename, strerror(errno));
 		return 1;
 	}
