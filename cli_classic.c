@@ -896,7 +896,7 @@ int main(int argc, char *argv[])
 		cli_classic_abort_usage(NULL);
 	if (logfile && check_filename(logfile, "log"))
 		cli_classic_abort_usage(NULL);
-	if (logfile && open_logfile(logfile))
+	if (logfile && open_logfile(logfile,logfile_append))
 		cli_classic_abort_usage(NULL);
 
 #if CONFIG_PRINT_WIKI == 1
