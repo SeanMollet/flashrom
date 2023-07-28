@@ -45,42 +45,43 @@ static void cli_classic_usage(const char *name)
 	       "\t[-V[V[V]]] [-o <logfile>]\n\n", name);
 
 	printf(" -h | --help                        print this help text\n"
-	       " -R | --version                     print version (release)\n"
-	       " -r | --read <file>                 read flash and save to <file>\n"
-	       " -w | --write (<file>|-)            write <file> or the content provided\n"
-	       "                                    on the standard input to flash\n"
-	       " -v | --verify (<file>|-)           verify flash against <file>\n"
-	       "                                    or the content provided on the standard input\n"
-	       " -E | --erase                       erase flash memory\n"
-	       " -V | --verbose                     more verbose output\n"
-	       " -c | --chip <chipname>             probe only for specified flash chip\n"
-	       " -f | --force                       force specific operations (see man page)\n"
-	       " -n | --noverify                    don't auto-verify\n"
-	       " -N | --noverify-all                verify included regions only (cf. -i)\n"
-	       " -x | --extract                     extract regions to files\n"
-	       " -l | --layout <layoutfile>         read ROM layout from <layoutfile>\n"
-	       "      --wp-disable                  disable write protection\n"
-	       "      --wp-enable                   enable write protection\n"
-	       "      --wp-list                     list supported write protection ranges\n"
-	       "      --wp-status                   show write protection status\n"
-	       "      --wp-range=<start>,<len>      set write protection range (use --wp-range=0,0\n"
-	       "                                    to unprotect the entire flash)\n"
-	       "      --wp-region <region>          set write protection region\n"
-	       "      --flash-name                  read out the detected flash name\n"
-	       "      --flash-size                  read out the detected flash size\n"
-	       "      --fmap                        read ROM layout from fmap embedded in ROM\n"
-	       "      --fmap-file <fmapfile>        read ROM layout from fmap in <fmapfile>\n"
-	       "      --ifd                         read layout from an Intel Firmware Descriptor\n"
-	       " -i | --include <region>[:<file>]   only read/write image <region> from layout\n"
-	       "                                    (optionally with data from <file>)\n"
-	       "      --image <region>[:<file>]     deprecated, please use --include\n"
-	       " -o | --output <logfile>            log output to <logfile>\n"
-	       "      --flash-contents <ref-file>   assume flash contents to be <ref-file>\n"
-	       " -L | --list-supported              print supported devices\n"
+		   " -R | --version                     print version (release)\n"
+		   " -r | --read <file>                 read flash and save to <file>\n"
+		   " -w | --write (<file>|-)            write <file> or the content provided\n"
+		   "                                    on the standard input to flash\n"
+		   " -v | --verify (<file>|-)           verify flash against <file>\n"
+		   "                                    or the content provided on the standard input\n"
+		   " -E | --erase                       erase flash memory\n"
+		   " -V | --verbose                     more verbose output\n"
+		   " -c | --chip <chipname>             probe only for specified flash chip\n"
+		   " -f | --force                       force specific operations (see man page)\n"
+		   " -n | --noverify                    don't auto-verify\n"
+		   " -N | --noverify-all                verify included regions only (cf. -i)\n"
+		   " -x | --extract                     extract regions to files\n"
+		   " -l | --layout <layoutfile>         read ROM layout from <layoutfile>\n"
+		   "      --wp-disable                  disable write protection\n"
+		   "      --wp-enable                   enable write protection\n"
+		   "      --wp-list                     list supported write protection ranges\n"
+		   "      --wp-status                   show write protection status\n"
+		   "      --wp-range=<start>,<len>      set write protection range (use --wp-range=0,0\n"
+		   "                                    to unprotect the entire flash)\n"
+		   "      --wp-region <region>          set write protection region\n"
+		   "      --flash-name                  read out the detected flash name\n"
+		   "      --flash-size                  read out the detected flash size\n"
+		   "      --fmap                        read ROM layout from fmap embedded in ROM\n"
+		   "      --fmap-file <fmapfile>        read ROM layout from fmap in <fmapfile>\n"
+		   "      --ifd                         read layout from an Intel Firmware Descriptor\n"
+		   " -i | --include <region>[:<file>]   only read/write image <region> from layout\n"
+		   "                                    (optionally with data from <file>)\n"
+		   "      --image <region>[:<file>]     deprecated, please use --include\n"
+		   " -o | --output <logfile>            log output to <logfile>\n"
+		   " -a | --append                      Don't overwrite <logfile>\n"
+		   "      --flash-contents <ref-file>   assume flash contents to be <ref-file>\n"
+		   " -L | --list-supported              print supported devices\n"
 #if CONFIG_PRINT_WIKI == 1
-	       " -z | --list-supported-wiki         print supported devices in wiki syntax\n"
+		   " -z | --list-supported-wiki         print supported devices in wiki syntax\n"
 #endif
-	       " -p | --programmer <name>[:<param>] specify the programmer device. One of\n");
+		   " -p | --programmer <name>[:<param>] specify the programmer device. One of\n");
 	list_programmers_linebreak(4, 80, 0);
 	printf(".\n\nYou can specify one of -h, -R, -L, "
 #if CONFIG_PRINT_WIKI == 1
@@ -598,7 +599,7 @@ int main(int argc, char *argv[])
 	};
 	int ret = 0;
 
-	static const char optstring[] = "r:Rw:v:nNVEfc:l:i:p:Lzho:x";
+	static const char optstring[] = "r:Rw:v:nNVEfc:l:i:p:Lzho:xa";
 	static const struct option long_options[] = {
 		{"read",		1, NULL, 'r'},
 		{"write",		1, NULL, 'w'},
@@ -632,6 +633,7 @@ int main(int argc, char *argv[])
 		{"help",		0, NULL, 'h'},
 		{"version",		0, NULL, 'R'},
 		{"output",		1, NULL, 'o'},
+		{"append",		0, NULL, 'a'},
 		{NULL,			0, NULL, 0},
 	};
 
@@ -640,6 +642,7 @@ int main(int argc, char *argv[])
 	char *layoutfile = NULL;
 	char *fmapfile = NULL;
 	char *logfile = NULL;
+	bool logfile_append = false;
 	char *tempstr = NULL;
 	char *pparam = NULL;
 	struct layout_include_args *include_args = NULL;
@@ -871,6 +874,9 @@ int main(int argc, char *argv[])
 			if (logfile[0] == '\0') {
 				cli_classic_abort_usage("No log filename specified.\n");
 			}
+			break;
+		case 'a':
+			logfile_append = true;
 			break;
 		default:
 			cli_classic_abort_usage(NULL);
